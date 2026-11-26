@@ -4,13 +4,19 @@ Asistente de Datos y Nube: aplicación web multiservicio.
 Área de ciencia de datos:      Asesor de proyecto, Analista de CSV.
 Área de nube y contenedores:   Asistente de Docker, Arquitecto en la nube, Tutor de la nube.
 
-Versión base: pestañas, contador de cuota y prueba de conexión con Gemini.
-Los servicios se agregan uno por uno en los pasos siguientes del laboratorio.
+Cada servicio vive en su propio archivo y aporta su pestaña con construir_pestana().
+Los servicios se agregan uno por uno en los pasos del laboratorio.
 """
 import os
 import gradio as gr
 
 import gemini_cliente as gc
+import asesor
+
+# Servicios ya construidos: nombre de la pestaña -> función que arma su contenido
+CONSTRUIDOS = {
+    "💡 Asesor de proyecto": asesor.construir_pestana,
+}
 
 SERVICIOS = {
     "Ciencia de datos": [
@@ -62,7 +68,10 @@ with gr.Blocks(title="Asistente de Datos y Nube") as demo:
         for area in SERVICIOS.values():
             for nombre, _ in area:
                 with gr.Tab(nombre):
-                    gr.Markdown("🚧 Servicio en construcción. Se agrega en los próximos pasos.")
+                    if nombre in CONSTRUIDOS:
+                        CONSTRUIDOS[nombre]()
+                    else:
+                        gr.Markdown("🚧 Servicio en construcción. Se agrega en los próximos pasos.")
 
     gr.Markdown("⚠️ No suba datos personales: en la capa gratuita de Gemini, "
                 "Google puede usar las consultas para mejorar sus productos.")

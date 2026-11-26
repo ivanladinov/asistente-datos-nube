@@ -45,7 +45,7 @@ def consultas_restantes():
         return max(LIMITE_DIARIO - _contador["usadas"], 0)
 
 
-def preguntar(contenido, esquema=None, ejecutar_codigo=False):
+def preguntar(contenido, esquema=None, ejecutar_codigo=False, instrucciones=None):
     """
     Envía una consulta a Gemini y devuelve la respuesta completa.
 
@@ -60,6 +60,8 @@ def preguntar(contenido, esquema=None, ejecutar_codigo=False):
         _contador["usadas"] += 1
 
     opciones = {}
+    if instrucciones:   # rol y reglas del servicio (Gemini las respeta mejor así)
+        opciones["system_instruction"] = instrucciones
     if esquema is not None:
         opciones["response_mime_type"] = "application/json"
         opciones["response_schema"] = esquema

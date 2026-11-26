@@ -1,3 +1,9 @@
 # Librerías de la app (versiones fijas para que el contenedor sea reproducible)
 gradio==6.32.0
 google-genai==3.6.1
+# Asesor de proyecto: datos estructurados, gráficos, notebooks y API de GitHub
+pydantic==2.14.4
+matplotlib==3.11.2
+pandas==3.1.1
+nbformat==5.11.1
+requests==2.34.2
